@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Datalist</title>
+  <style>
+    /* Add some basic styling for demonstration purposes */
+    #custom-datalist {
+      position: relative;
+    }
+    #suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1;
+      border: 1px solid #ccc;
+      border-top: none;
+      display: none;
+      max-height: 100px;
+      width: auto;
+      overflow-y: auto;
+    }
+    #suggestions li {
+      list-style: none;
+      padding: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <label for="custom-input">Type or select:</label>
+  <div id="custom-datalist">
+    <input type="text" id="custom-input" oninput="showSuggestions()">
+    <ul id="suggestions"></ul>
+  </div>
+
+  <script>
+    var suggestions = ['Option 1OptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionOptionx', 'Option 2', 'Option 3'];
+
+    function showSuggestions() {
+      var input = document.getElementById('custom-input');
+      var suggestionList = document.getElementById('suggestions');
+
+      // Clear previous suggestions
+      suggestionList.innerHTML = '';
+
+      // Filter suggestions based on input value
+      var filteredSuggestions = suggestions.filter(function (option) {
+        return option.toLowerCase().includes(input.value.toLowerCase());
+      });
+
+      // Display filtered suggestions
+      filteredSuggestions.forEach(function (option) {
+        var li = document.createElement('li');
+        li.textContent = option;
+        li.onclick = function () {
+          input.value = option;
+          suggestionList.style.display = 'none';
+        };
+        suggestionList.appendChild(li);
+      });
+
+      // Show or hide suggestion list
+      suggestionList.style.display = filteredSuggestions.length > 0 ? 'block' : 'none';
+    }
+
+    // Close the suggestion list when clicking outside the input and suggestions
+    document.addEventListener('click', function (event) {
+      var input = document.getElementById('custom-input');
+      var suggestionList = document.getElementById('suggestions');
+
+      if (event.target !== input && !suggestionList.contains(event.target)) {
+        suggestionList.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
